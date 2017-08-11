@@ -49,6 +49,25 @@ outputs:
   deduped-metrics:
     type: File
     outputSource: dedup/markDups_metrics
+  index-dedup-out:
+    type: File
+    outputSource: index-dedup/index
+  # Insert Metrics
+  insert-metrics-output:
+    type: File
+    outputSource: dedup/markDups_output
+  insert-metrics-histogram:
+    type: File
+    outputSource: dedup/markDups_metrics
+  index-dedup-out:
+    type: File
+    outputSource: index-dedup/index
+  insert-metrics-output:
+    type: File
+    outputSource: insert-metrics/output
+  insert-metrics-histogram:
+    type: File
+    outputSource: insert-metrics/histogram
 
 steps:
 
@@ -205,4 +224,47 @@ steps:
 
     out: [markDups_output, markDups_metrics]
 
+  #
+  # index duplicates
+  #
+  index-dedup:
+    run: ../tools/src/tools/samtools-index.cwl
 
+    in:
+      input:
+        source: dedup/markDups_output
+
+    out: [index]
+
+
+#
+# Collect insert-size, aka fragment-size, statistics
+#
+  insert-metrics:
+    run: ../tools/src/tools/picard-CollectInsertSizeMetrics.cwl
+
+    in:
+      INPUT: dedup/markDups_output
+
+      OUTPUT:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.insert-metrics.txt'
+          }
+
+      HISTOGRAM_FILE:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.insert-metrics.pdf'
+          }
+
+      removeDuplicates:
+        default: true
+
+    out: [output, histogram]
