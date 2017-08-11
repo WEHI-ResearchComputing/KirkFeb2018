@@ -268,3 +268,64 @@ steps:
         default: true
 
     out: [output, histogram]
+
+  #
+  # Inspect coverage and gene bias:-
+  # bedtools genomecov -d -split -ibam 225-${fn}_nodup.bam
+  #
+  coverage:
+    run: ../tools/src/tools/bedtools-genomecov.cwl
+
+    in:
+      input:
+        source: dedup/markDups_output
+        valueFrom: >
+          ${
+              self.format = "http://edamontology.org/format_2572";
+              return self;
+          }
+
+
+      genomecoverageout:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.genomecov.out'
+          }
+
+      depth:
+        valueFrom: '-d'
+
+      split:
+        default: true
+
+    out: [genomecoverage]
+
+  #
+  # Summarize genomecov output
+  #
+  summarize-genomecov:
+    run: ../tools/src/tools/awk.cwl
+
+    in:
+      infile: coverage/genomecoverage
+
+      program:
+        valueFrom: >
+          $( '{total += $3; count +=1; sumsq += $3*$3}; END {print "mean cov is", total / count, ". Var of cov is", (sumsq - total^2/count)/(count-1)}' )
+
+      outputFileName:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.genomecov.summary.txt'
+          }
+
+    out: [output]
+
+
+
