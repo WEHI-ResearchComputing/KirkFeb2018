@@ -3,5 +3,5 @@ Project from Jenny Thompson and Alan Cowman,
 Copied from pipeline used Jan-Feb 2017 for 754 data
 225 version started May 2017 by Jocelyn Sietsma Penington
 
-Refer to pipeline255.sh 
+Refer to sh/pipeline255.sh 
 
