@@ -10,6 +10,7 @@ requirements:
   - var tool_location = function() { return "tools/src/tools/"; };
 - class: ScatterFeatureRequirement
 - class: StepInputExpressionRequirement
+- class: MultipleInputFeatureRequirement
 - $import: ../tools/src/tools/envvar-global.yml
 
 inputs:
@@ -19,10 +20,10 @@ inputs:
 outputs:
   # fastqc output
   fastqc-zips:
-    type: File
+    type: File[]
     outputSource: fastqc/zippedFile
   fastqc-reports:
-    type: File
+    type: File[]
     outputSource: fastqc/report
 
 steps:
@@ -34,7 +35,10 @@ steps:
     run: ../tools/src/tools/fastqc.cwl
 
     in:
-      reads1: read1
-      reads2: read2
+      fastq: [read1, read2]
+
+      outdir:
+        default: '.'
+
 
     out: [zippedFile, report]
