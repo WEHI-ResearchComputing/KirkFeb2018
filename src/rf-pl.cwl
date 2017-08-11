@@ -29,6 +29,19 @@ outputs:
   align-sam:
     type: File
     outputSource: align/aligned-file
+  # convert
+  sorted:
+    type: File
+    streamable: true
+    outputSource: convert/output
+  # sort and compress
+  compressed:
+    type: File
+    outputSource: sort/sorted
+  # Index human bam
+  indexed:
+    type: File
+    outputSource: index/index
 
 steps:
 
@@ -95,3 +108,61 @@ steps:
           }
 
     out: [aligned-file]
+
+
+  #
+  # convert to bam
+  #
+  convert:
+    run: ../tools/src/tools/samtools-view.cwl
+
+    in:
+      input:
+        align/aligned-file
+      output_name:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-6);
+              return fn + '.bam'
+          }
+      threads:
+        valueFrom: ${ return num_threads(); }
+
+    out: [output]
+
+  #
+  # sort and compress
+  #
+  sort:
+    run: ../tools/src/tools/samtools-sort.cwl
+
+    in:
+      input:
+        source: convert/output
+      output_name:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-6);
+              return fn + '.sorted.bam'
+          }
+      threads:
+        valueFrom: ${ return num_threads(); }
+
+    out: [sorted]
+
+  #
+  # index bam
+  #
+  index:
+    run: ../tools/src/tools/samtools-index.cwl
+
+    in:
+      input:
+        source: sort/sorted
+
+    out: [index]
+
