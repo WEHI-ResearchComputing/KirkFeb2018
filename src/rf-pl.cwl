@@ -42,6 +42,13 @@ outputs:
   indexed:
     type: File
     outputSource: index/index
+  # Dedup
+  deduped-output:
+    type: File
+    outputSource: dedup/markDups_output
+  deduped-metrics:
+    type: File
+    outputSource: dedup/markDups_metrics
 
 steps:
 
@@ -72,7 +79,7 @@ steps:
         valueFrom: >
           ${
               var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-6);
+              fn = fn.substring(0,fn.length-9);
               return fn + '.sam'
           }
 
@@ -124,7 +131,7 @@ steps:
         valueFrom: >
           ${
               var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-6);
+              fn = fn.substring(0,fn.length-9);
               return fn + '.bam'
           }
       threads:
@@ -146,7 +153,7 @@ steps:
         valueFrom: >
           ${
               var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-6);
+              fn = fn.substring(0,fn.length-9);
               return fn + '.sorted.bam'
           }
       threads:
@@ -165,4 +172,37 @@ steps:
         source: sort/sorted
 
     out: [index]
+
+#
+# Remove duplicate reads
+#
+  dedup:
+    run: ../tools/src/tools/picard-MarkDuplicates.cwl
+
+    in:
+      inputFileName_markDups: sort/sorted
+
+      outputFileName_markDups:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '_nodup.bam'
+          }
+
+      metricsFile:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '_duplic.metrics'
+          }
+
+      removeDuplicates:
+        default: true
+
+    out: [markDups_output, markDups_metrics]
+
 
