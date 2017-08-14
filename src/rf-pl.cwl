@@ -69,12 +69,15 @@ outputs:
   #   type: File
   #   outputSource: insert-metrics/histogram
   # Coverage files
-  intersect-genic-out:
+  # intersect-genic-out:
+  #   type: File
+  #   outputSource: intersect-genic/intersect
+  # intersect-nongenic-out:
+  #   type: File
+  #   outputSource: intersect-nongenic/intersect
+  igvtools-out:
     type: File
-    outputSource: intersect-genic/intersect
-  intersect-nongenic-out:
-    type: File
-    outputSource: intersect-nongenic/intersect
+    outputSource: igvtools/output
 
 steps:
 
@@ -333,119 +336,198 @@ steps:
 
 #     out: [output]
 
-#
-# bedtools intersect genic
-#
-  intersect-genic:
-    run: ../tools/src/tools/bedtools-intersect.cwl
+# #
+# # bedtools intersect genic
+# #
+#   intersect-genic:
+#     run: ../tools/src/tools/bedtools-intersect.cwl
 
-    in:
-      inputA:
-        source: dedup/markDups_output
-        valueFrom: >
-          ${
-              self.format = "http://edamontology.org/format_2572";
-              return self;
-          }
+#     in:
+#       inputA:
+#         source: dedup/markDups_output
+#         valueFrom: >
+#           ${
+#               self.format = "http://edamontology.org/format_2572";
+#               return self;
+#           }
 
-      inputB:
-         default:
-           class: File
-           location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
+#       inputB:
+#          default:
+#            class: File
+#            location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
 
-      split:
-        valueFrom: $( true )
+#       split:
+#         valueFrom: $( true )
 
-      intersectout:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.intersect.genic.bam'
-          }
+#       intersectout:
+#         source: read1
+#         valueFrom: >
+#           ${
+#               var fn = self.nameroot;
+#               fn = fn.substring(0,fn.length-9);
+#               return fn + '.intersect.genic.bam'
+#           }
 
-    out: [intersect]
+#     out: [intersect]
 
 
-#
-# bedtools intersect non-genic
-#
-  intersect-nongenic:
-    run: ../tools/src/tools/bedtools-intersect.cwl
+# #
+# # bedtools intersect non-genic
+# #
+#   intersect-nongenic:
+#     run: ../tools/src/tools/bedtools-intersect.cwl
 
-    in:
-      inputA:
-        source: dedup/markDups_output
-        valueFrom: >
-          ${
-              self.format = "http://edamontology.org/format_2572";
-              return self;
-          }
+#     in:
+#       inputA:
+#         source: dedup/markDups_output
+#         valueFrom: >
+#           ${
+#               self.format = "http://edamontology.org/format_2572";
+#               return self;
+#           }
 
-      inputB:
-         default:
-           class: File
-           location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
+#       inputB:
+#          default:
+#            class: File
+#            location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
 
-      reportNoOverlaps:
-        valueFrom: $( true )
+#       reportNoOverlaps:
+#         valueFrom: $( true )
 
-      intersectout:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.intersect.nongenic.bam'
-          }
+#       intersectout:
+#         source: read1
+#         valueFrom: >
+#           ${
+#               var fn = self.nameroot;
+#               fn = fn.substring(0,fn.length-9);
+#               return fn + '.intersect.nongenic.bam'
+#           }
 
-    out: [intersect]
+#     out: [intersect]
+
+  # #
+  # # Inspect coverage of genic intersection
+  # #
+  # coverage-genic:
+  #   run: ../tools/src/tools/bedtools-genomecov.cwl
+
+  #   in:
+  #     input:
+  #       source: intersect-genic/intersect
+  #       valueFrom: >
+  #         ${
+  #             self.format = "http://edamontology.org/format_2572";
+  #             return self;
+  #         }
+
+  #     genomecoverageout:
+  #       source: read1
+  #       valueFrom: >
+  #         ${
+  #             var fn = self.nameroot;
+  #             fn = fn.substring(0,fn.length-9);
+  #             return fn + '.genic.genomecov.out'
+  #         }
+
+  #     depth:
+  #       valueFrom: '-d'
+
+  #     split:
+  #       default: true
+
+  #   out: [genomecoverage]
+
+  # #
+  # # Summarize coverage output
+  # #
+  # summarize-genic-genomecov:
+  #   run: ../tools/src/tools/awk.cwl
+
+  #   in:
+  #     infile: coverage-genic/genomecoverage
+
+  #     program:
+  #       valueFrom: >
+  #         $( '{total += $3; count +=1}; END {print "total of all reads at genic bases", total, ", mean cov is", total / 13979861}' )
+
+  #     outputFileName:
+  #       source: read1
+  #       valueFrom: >
+  #         ${
+  #             var fn = self.nameroot;
+  #             fn = fn.substring(0,fn.length-9);
+  #             return fn + '.genic.genomecov.summary.txt'
+  #         }
+
+  #   out: [output]
+
+
+  # #
+  # # Inspect coverage of nongenic intersection
+  # #
+  # coverage-nongenic:
+  #   run: ../tools/src/tools/bedtools-genomecov.cwl
+
+  #   in:
+  #     input:
+  #       source: intersect-nongenic/intersect
+  #       valueFrom: >
+  #         ${
+  #             self.format = "http://edamontology.org/format_2572";
+  #             return self;
+  #         }
+
+  #     genomecoverageout:
+  #       source: read1
+  #       valueFrom: >
+  #         ${
+  #             var fn = self.nameroot;
+  #             fn = fn.substring(0,fn.length-9);
+  #             return fn + '.nongenic.genomecov.out'
+  #         }
+
+  #     depth:
+  #       valueFrom: '-d'
+
+  #     split:
+  #       default: true
+
+  #   out: [genomecoverage]
+
+  # #
+  # # Summarize coverage output
+  # #
+  # summarize-nongenic-genomecov:
+  #   run: ../tools/src/tools/awk.cwl
+
+  #   in:
+  #     infile: coverage-nongenic/genomecoverage
+
+  #     program:
+  #       valueFrom: >
+  #         $( '{total += $3; count +=1}; END {print "total of all reads at nongene bases", total, ", mean cov is", total / 13979861}' )
+
+  #     outputFileName:
+  #       source: read1
+  #       valueFrom: >
+  #         ${
+  #             var fn = self.nameroot;
+  #             fn = fn.substring(0,fn.length-9);
+  #             return fn + '.nongenic.genomecov.summary.txt'
+  #         }
+
+  #   out: [output]
 
   #
-  # Inspect coverage of genic intersection
+  # Looking at bams in IGV is memory-hungry, and could be replaced by using tdf-format
+  # coverage files. 3D7-merge-B3_S1-C5_S2.bam done at command line.
+  # Default window size is 25bp
   #
-  coverage-genic:
-    run: ../tools/src/tools/bedtools-genomecov.cwl
+  igvtools:
+    run: ../tools/src/tools/igvtools-count.cwl
 
     in:
-      input:
-        source: intersect-genic/intersect
-        valueFrom: >
-          ${
-              self.format = "http://edamontology.org/format_2572";
-              return self;
-          }
-
-      genomecoverageout:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.genic.genomecov.out'
-          }
-
-      depth:
-        valueFrom: '-d'
-
-      split:
-        default: true
-
-    out: [genomecoverage]
-
-  #
-  # Summarize coverage output
-  #
-  summarize-genic-genomecov:
-    run: ../tools/src/tools/awk.cwl
-
-    in:
-      infile: coverage-genic/genomecoverage
-
-      program:
-        valueFrom: >
-          $( '{total += $3; count +=1}; END {print "total of all reads at genic bases", total, ", mean cov is", total / 13979861}' )
+      inputFile: dedup/markDups_output
 
       outputFileName:
         source: read1
@@ -453,64 +535,14 @@ steps:
           ${
               var fn = self.nameroot;
               fn = fn.substring(0,fn.length-9);
-              return fn + '.genic.genomecov.summary.txt'
+              return fn + '.tdf';
           }
+
+      genome:
+         default:
+           class: File
+           location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
 
     out: [output]
 
 
-  #
-  # Inspect coverage of nongenic intersection
-  #
-  coverage-nongenic:
-    run: ../tools/src/tools/bedtools-genomecov.cwl
-
-    in:
-      input:
-        source: intersect-nongenic/intersect
-        valueFrom: >
-          ${
-              self.format = "http://edamontology.org/format_2572";
-              return self;
-          }
-
-      genomecoverageout:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.nongenic.genomecov.out'
-          }
-
-      depth:
-        valueFrom: '-d'
-
-      split:
-        default: true
-
-    out: [genomecoverage]
-
-  #
-  # Summarize coverage output
-  #
-  summarize-nongenic-genomecov:
-    run: ../tools/src/tools/awk.cwl
-
-    in:
-      infile: coverage-nongenic/genomecoverage
-
-      program:
-        valueFrom: >
-          $( '{total += $3; count +=1}; END {print "total of all reads at nongene bases", total, ", mean cov is", total / 13979861}' )
-
-      outputFileName:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.nongenic.genomecov.summary.txt'
-          }
-
-    out: [output]
