@@ -53,21 +53,28 @@ outputs:
     type: File
     outputSource: index-dedup/index
   # Insert Metrics
-  insert-metrics-output:
+  # insert-metrics-output:
+  #   type: File
+  #   outputSource: dedup/markDups_output
+  # insert-metrics-histogram:
+  #   type: File
+  #   outputSource: dedup/markDups_metrics
+  # index-dedup-out:
+  #   type: File
+  #   outputSource: index-dedup/index
+  # insert-metrics-output:
+  #   type: File
+  #   outputSource: insert-metrics/output
+  # insert-metrics-histogram:
+  #   type: File
+  #   outputSource: insert-metrics/histogram
+  # Coverage files
+  intersect-genic-out:
     type: File
-    outputSource: dedup/markDups_output
-  insert-metrics-histogram:
+    outputSource: intersect-genic/intersect
+  intersect-nongenic-out:
     type: File
-    outputSource: dedup/markDups_metrics
-  index-dedup-out:
-    type: File
-    outputSource: index-dedup/index
-  insert-metrics-output:
-    type: File
-    outputSource: insert-metrics/output
-  insert-metrics-histogram:
-    type: File
-    outputSource: insert-metrics/histogram
+    outputSource: intersect-nongenic/intersect
 
 steps:
 
@@ -237,47 +244,103 @@ steps:
     out: [index]
 
 
+# #
+# # Collect insert-size, aka fragment-size, statistics
+# #
+#   insert-metrics:
+#     run: ../tools/src/tools/picard-CollectInsertSizeMetrics.cwl
+
+#     in:
+#       INPUT: dedup/markDups_output
+
+#       OUTPUT:
+#         source: read1
+#         valueFrom: >
+#           ${
+#               var fn = self.nameroot;
+#               fn = fn.substring(0,fn.length-9);
+#               return fn + '.insert-metrics.txt'
+#           }
+
+#       HISTOGRAM_FILE:
+#         source: read1
+#         valueFrom: >
+#           ${
+#               var fn = self.nameroot;
+#               fn = fn.substring(0,fn.length-9);
+#               return fn + '.insert-metrics.pdf'
+#           }
+
+#       removeDuplicates:
+#         default: true
+
+#     out: [output, histogram]
+
+#   #
+#   # Inspect coverage and gene bias:-
+#   # bedtools genomecov -d -split -ibam 225-${fn}_nodup.bam
+#   #
+#   coverage:
+#     run: ../tools/src/tools/bedtools-genomecov.cwl
+
+#     in:
+#       input:
+#         source: dedup/markDups_output
+#         valueFrom: >
+#           ${
+#               self.format = "http://edamontology.org/format_2572";
+#               return self;
+#           }
+
+#       genomecoverageout:
+#         source: read1
+#         valueFrom: >
+#           ${
+#               var fn = self.nameroot;
+#               fn = fn.substring(0,fn.length-9);
+#               return fn + '.genomecov.out'
+#           }
+
+#       depth:
+#         valueFrom: '-d'
+
+#       split:
+#         default: true
+
+#     out: [genomecoverage]
+
+#   #
+#   # Summarize genomecov output
+#   #
+#   summarize-genomecov:
+#     run: ../tools/src/tools/awk.cwl
+
+#     in:
+#       infile: coverage/genomecoverage
+
+#       program:
+#         valueFrom: >
+#           $( '{total += $3; count +=1; sumsq += $3*$3}; END {print "mean cov is", total / count, ". Var of cov is", (sumsq - total^2/count)/(count-1)}' )
+
+#       outputFileName:
+#         source: read1
+#         valueFrom: >
+#           ${
+#               var fn = self.nameroot;
+#               fn = fn.substring(0,fn.length-9);
+#               return fn + '.genomecov.summary.txt'
+#           }
+
+#     out: [output]
+
 #
-# Collect insert-size, aka fragment-size, statistics
+# bedtools intersect genic
 #
-  insert-metrics:
-    run: ../tools/src/tools/picard-CollectInsertSizeMetrics.cwl
+  intersect-genic:
+    run: ../tools/src/tools/bedtools-intersect.cwl
 
     in:
-      INPUT: dedup/markDups_output
-
-      OUTPUT:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.insert-metrics.txt'
-          }
-
-      HISTOGRAM_FILE:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.insert-metrics.pdf'
-          }
-
-      removeDuplicates:
-        default: true
-
-    out: [output, histogram]
-
-  #
-  # Inspect coverage and gene bias:-
-  # bedtools genomecov -d -split -ibam 225-${fn}_nodup.bam
-  #
-  coverage:
-    run: ../tools/src/tools/bedtools-genomecov.cwl
-
-    in:
-      input:
+      inputA:
         source: dedup/markDups_output
         valueFrom: >
           ${
@@ -285,47 +348,56 @@ steps:
               return self;
           }
 
-
-      genomecoverageout:
-        source: read1
-        valueFrom: >
-          ${
-              var fn = self.nameroot;
-              fn = fn.substring(0,fn.length-9);
-              return fn + '.genomecov.out'
-          }
-
-      depth:
-        valueFrom: '-d'
+      inputB:
+         default:
+           class: File
+           location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
 
       split:
-        default: true
+        valueFrom: $( true )
 
-    out: [genomecoverage]
-
-  #
-  # Summarize genomecov output
-  #
-  summarize-genomecov:
-    run: ../tools/src/tools/awk.cwl
-
-    in:
-      infile: coverage/genomecoverage
-
-      program:
-        valueFrom: >
-          $( '{total += $3; count +=1; sumsq += $3*$3}; END {print "mean cov is", total / count, ". Var of cov is", (sumsq - total^2/count)/(count-1)}' )
-
-      outputFileName:
+      intersectout:
         source: read1
         valueFrom: >
           ${
               var fn = self.nameroot;
               fn = fn.substring(0,fn.length-9);
-              return fn + '.genomecov.summary.txt'
+              return fn + '.intersect.genic.bam'
           }
 
-    out: [output]
+    out: [intersect]
 
 
+#
+# bedtools intersect non-genic
+#
+  intersect-nongenic:
+    run: ../tools/src/tools/bedtools-intersect.cwl
 
+    in:
+      inputA:
+        source: dedup/markDups_output
+        valueFrom: >
+          ${
+              self.format = "http://edamontology.org/format_2572";
+              return self;
+          }
+
+      inputB:
+         default:
+           class: File
+           location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
+
+      reportNoOverlaps:
+        valueFrom: $( true )
+
+      intersectout:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.intersect.nongenic.bam'
+          }
+
+    out: [intersect]
