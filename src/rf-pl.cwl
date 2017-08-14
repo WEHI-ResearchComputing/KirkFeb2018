@@ -401,3 +401,116 @@ steps:
           }
 
     out: [intersect]
+
+  #
+  # Inspect coverage of genic intersection
+  #
+  coverage-genic:
+    run: ../tools/src/tools/bedtools-genomecov.cwl
+
+    in:
+      input:
+        source: intersect-genic/intersect
+        valueFrom: >
+          ${
+              self.format = "http://edamontology.org/format_2572";
+              return self;
+          }
+
+      genomecoverageout:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.genic.genomecov.out'
+          }
+
+      depth:
+        valueFrom: '-d'
+
+      split:
+        default: true
+
+    out: [genomecoverage]
+
+  #
+  # Summarize coverage output
+  #
+  summarize-genic-genomecov:
+    run: ../tools/src/tools/awk.cwl
+
+    in:
+      infile: coverage-genic/genomecoverage
+
+      program:
+        valueFrom: >
+          $( '{total += $3; count +=1}; END {print "total of all reads at genic bases", total, ", mean cov is", total / 13979861}' )
+
+      outputFileName:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.genic.genomecov.summary.txt'
+          }
+
+    out: [output]
+
+
+  #
+  # Inspect coverage of nongenic intersection
+  #
+  coverage-nongenic:
+    run: ../tools/src/tools/bedtools-genomecov.cwl
+
+    in:
+      input:
+        source: intersect-nongenic/intersect
+        valueFrom: >
+          ${
+              self.format = "http://edamontology.org/format_2572";
+              return self;
+          }
+
+      genomecoverageout:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.nongenic.genomecov.out'
+          }
+
+      depth:
+        valueFrom: '-d'
+
+      split:
+        default: true
+
+    out: [genomecoverage]
+
+  #
+  # Summarize coverage output
+  #
+  summarize-nongenic-genomecov:
+    run: ../tools/src/tools/awk.cwl
+
+    in:
+      infile: coverage-nongenic/genomecoverage
+
+      program:
+        valueFrom: >
+          $( '{total += $3; count +=1}; END {print "total of all reads at nongene bases", total, ", mean cov is", total / 13979861}' )
+
+      outputFileName:
+        source: read1
+        valueFrom: >
+          ${
+              var fn = self.nameroot;
+              fn = fn.substring(0,fn.length-9);
+              return fn + '.nongenic.genomecov.summary.txt'
+          }
+
+    out: [output]
