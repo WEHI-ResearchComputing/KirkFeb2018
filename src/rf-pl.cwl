@@ -75,6 +75,16 @@ outputs:
   intersect-nongenic-out:
     type: File
     outputSource: intersect-nongenic/intersect
+  summarize-genomecov-out:
+    type: File
+    outputSource: summarize-genomecov/output
+  summarize-genic-genomecov-out:
+    type: File
+    outputSource: summarize-genic-genomecov/output
+  summarize-nongenic-genomecov-out:
+    type: File
+    outputSource: summarize-nongenic-genomecov/output
+  # igvtools
   igvtools-out:
     type: File
     outputSource: igvtools/output
