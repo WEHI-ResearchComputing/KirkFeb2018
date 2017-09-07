@@ -6,7 +6,7 @@ cwlVersion: v1.0
 requirements:
 - class: InlineJavascriptRequirement
   expressionLib:
-  - var num_threads = function() { return 4; };
+  - var num_threads = function() { return 8; };
   - var tool_location = function() { return "tools/src/tools/"; };
 - class: ScatterFeatureRequirement
 - class: StepInputExpressionRequirement
@@ -16,15 +16,40 @@ requirements:
 inputs:
   read1: File
   read2: File
+  alignment:
+      type: File
+      default:
+        class: File
+        path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/drug754/alignment/3D7-merge-B3_S1-C5_S2.bam
+        location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/drug754/alignment/3D7-merge-B3_S1-C5_S2.bam
+  reference:
+    type: File
+    default:
+      class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+      secondaryFiles:
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
 
 outputs:
-  # # fastqc output
-  # fastqc-zips:
-  #   type: File[]
-  #   outputSource: fastqc/zippedFile
-  # fastqc-reports:
-  #   type: File[]
-  #   outputSource: fastqc/report
+  # fastqc output
+  fastqc-zips:
+    type: File[]
+    outputSource: fastqc/zippedFile
+  fastqc-reports:
+    type: File[]
+    outputSource: fastqc/report
   # alignment
   align-sam:
     type: File
@@ -59,9 +84,6 @@ outputs:
   insert-metrics-histogram:
     type: File
     outputSource: dedup/markDups_metrics
-  index-dedup-out:
-    type: File
-    outputSource: index-dedup/index
   insert-metrics-output:
     type: File
     outputSource: insert-metrics/output
@@ -89,9 +111,18 @@ outputs:
     type: File
     outputSource: igvtools/output
   # gridss
-  gridss-out:
+  gridss-bam:
     type: File
-    outputSource: gridss/output
+    outputSource: gridss/bam
+  gridss-vcf:
+    type: File
+    outputSource: gridss/vcf
+  gridss-vcf-dir:
+    type: Directory
+    outputSource: gridss/vcf_working
+  gridss-bam-dir:
+    type: Directory
+    outputSource: gridss/bam_working
 
 steps:
 
@@ -519,7 +550,7 @@ steps:
 
       program:
         valueFrom: >
-          $( '{total += $3; count +=1}; END {print "total of all reads at nongene bases", total, ", mean cov is", total / 13979861}' )
+          $( '{total += $3; count +=1}; END {print "total of all reads at nongene bases", total, ", mean cov is", total / (count - 13979861)}' )
 
       outputFileName:
         source: read1
@@ -553,9 +584,10 @@ steps:
           }
 
       genome:
-         default:
-           class: File
-           location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+        source: reference
+         # default:
+         #   class: File
+         #   location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
 
     out: [output]
 
@@ -567,29 +599,22 @@ steps:
 
     in:
       INPUT:
-        source: dedup/markDups_output
+        source: [dedup/markDups_output, alignment]
         valueFrom: >
           ${
-              if ( self == null ) {
-                return null;
-              } else {
-                return [self];
-              }
+              return self;
             }
 
       INPUT_LABEL:
-        source: dedup/markDups_output
+        source: [dedup/markDups_output, alignment]
         valueFrom: >
           ${
-              if ( self == null ) {
-                return null;
-              } else {
-                return [self.nameroot];
-              }
+              return self.map( function(file) { return file.nameroot; } );
             }
 
       REFERENCE_SEQUENCE:
-        default: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+        source: reference
+        # default: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
 
       BLACKLIST:
         default:
@@ -626,4 +651,4 @@ steps:
               return "/home/thomas.e/tmp/";
           }
 
-    out: [output]
+    out: [vcf, bam, vcf_working, bam_working]
