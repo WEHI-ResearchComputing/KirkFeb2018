@@ -5,3 +5,12 @@ Copied from pipeline used Jan-Feb 2017 for 754 data
 
 Refer to sh/pipeline255.sh 
 
+## Quick HOWTO
+1. Create a new empty directory to hold code, scripts and output
+2. Clone this repository: `git clone --recursive https://github.com/WEHI-ResearchComputing/resistant-falciparum`. Note the recursive argument to bring in the common tool definitions.
+3. Create a toil installation.
+    * `virtualenv toil-env`
+    * `. toil-env/bin/activate`
+    * `pip install toil toil[cwl] cwltool html5lib`
+4. Clone the wehi pipeline add on: `git clone https://github.com/WEHI-ResearchComputing/wehi-pipeline.git`
+5. Edit and run the script `resistant-falciparum/src/make-input.py` to build the input file.
