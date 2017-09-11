@@ -29,16 +29,22 @@ inputs:
       secondaryFiles:
         - class: File
           path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
         - class: File
           path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
         - class: File
           path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
         - class: File
           path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
         - class: File
           path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
         - class: File
           path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
   gff:
     type: File
     default:
@@ -102,37 +108,37 @@ outputs:
   parent-index-dedup-out:
     type: File[]
     outputSource: all-parents/index-dedup-out
-  # # Insert Metrics
-  # parent-insert-metrics-output:
-  #   type:
-  #     type: array
-  #     items:
-  #       - "null"
-  #       - File
-  #   outputSource: all-parents/insert-metrics-output
-  # parent-insert-metrics-histogram:
-  #   type: File[]
-  #   outputSource: all-parents/insert-metrics-histogram
-  # # Coverage files
-  # parent-intersect-genic-out:
-  #   type: File[]
-  #   outputSource: all-parents/intersect-genic-out
-  # parent-intersect-nongenic-out:
-  #   type: File[]
-  #   outputSource: all-parents/intersect-nongenic-out
-  # parent-summarize-genomecov-out:
-  #   type: File[]
-  #   outputSource: all-parents/summarize-genomecov-out
-  # parent-summarize-genic-genomecov-out:
-  #   type: File[]
-  #   outputSource: all-parents/summarize-genic-genomecov-out
-  # parent-summarize-nongenic-genomecov-out:
-  #   type: File[]
-  #   outputSource: all-parents/summarize-nongenic-genomecov-out
-  # # igvtools
-  # parent-igvtools-out:
-  #   type: File[]
-  #   outputSource: all-parents/igvtools-out
+  # Insert Metrics
+  parent-insert-metrics-output:
+    type:
+      type: array
+      items:
+        - "null"
+        - File
+    outputSource: all-parents/insert-metrics-output
+  parent-insert-metrics-histogram:
+    type: File[]
+    outputSource: all-parents/insert-metrics-histogram
+  # Coverage files
+  parent-intersect-genic-out:
+    type: File[]
+    outputSource: all-parents/intersect-genic-out
+  parent-intersect-nongenic-out:
+    type: File[]
+    outputSource: all-parents/intersect-nongenic-out
+  parent-summarize-genomecov-out:
+    type: File[]
+    outputSource: all-parents/summarize-genomecov-out
+  parent-summarize-genic-genomecov-out:
+    type: File[]
+    outputSource: all-parents/summarize-genic-genomecov-out
+  parent-summarize-nongenic-genomecov-out:
+    type: File[]
+    outputSource: all-parents/summarize-nongenic-genomecov-out
+  # igvtools
+  parent-igvtools-out:
+    type: File[]
+    outputSource: all-parents/igvtools-out
 
   #
   # Child outputs
@@ -183,37 +189,37 @@ outputs:
   child-index-dedup-out:
     type: File[]
     outputSource: all-children/index-dedup-out
-  # # Insert Metrics
-  # child-insert-metrics-output:
-  #   type:
-  #     type: array
-  #     items:
-  #       - "null"
-  #       - File
-  #   outputSource: all-children/insert-metrics-output
-  # child-insert-metrics-histogram:
-  #   type: File[]
-  #   outputSource: all-children/insert-metrics-histogram
-  # # Coverage files
-  # child-intersect-genic-out:
-  #   type: File[]
-  #   outputSource: all-children/intersect-genic-out
-  # child-intersect-nongenic-out:
-  #   type: File[]
-  #   outputSource: all-children/intersect-nongenic-out
-  # child-summarize-genomecov-out:
-  #   type: File[]
-  #   outputSource: all-children/summarize-genomecov-out
-  # child-summarize-genic-genomecov-out:
-  #   type: File[]
-  #   outputSource: all-children/summarize-genic-genomecov-out
-  # child-summarize-nongenic-genomecov-out:
-  #   type: File[]
-  #   outputSource: all-children/summarize-nongenic-genomecov-out
-  # # igvtools
-  # child-igvtools-out:
-  #   type: File[]
-  #   outputSource: all-children/igvtools-out
+  # Insert Metrics
+  child-insert-metrics-output:
+    type:
+      type: array
+      items:
+        - "null"
+        - File
+    outputSource: all-children/insert-metrics-output
+  child-insert-metrics-histogram:
+    type: File[]
+    outputSource: all-children/insert-metrics-histogram
+  # Coverage files
+  child-intersect-genic-out:
+    type: File[]
+    outputSource: all-children/intersect-genic-out
+  child-intersect-nongenic-out:
+    type: File[]
+    outputSource: all-children/intersect-nongenic-out
+  child-summarize-genomecov-out:
+    type: File[]
+    outputSource: all-children/summarize-genomecov-out
+  child-summarize-genic-genomecov-out:
+    type: File[]
+    outputSource: all-children/summarize-genic-genomecov-out
+  child-summarize-nongenic-genomecov-out:
+    type: File[]
+    outputSource: all-children/summarize-nongenic-genomecov-out
+  # igvtools
+  child-igvtools-out:
+    type: File[]
+    outputSource: all-children/igvtools-out
 
   #
   # Merge parents
@@ -250,6 +256,7 @@ steps:
       read2: child-reads2
       alignment: alignment
       reference: reference
+      gff: gff
 
     out: [
         fastqc-zips,
@@ -260,15 +267,15 @@ steps:
         indexed,
         deduped-output,
         deduped-metrics,
-        index-dedup-out
-        # insert-metrics-output,
-        # insert-metrics-histogram,
-        # intersect-genic-out,
-        # intersect-nongenic-out,
-        # summarize-genomecov-out,
-        # summarize-genic-genomecov-out,
-        # summarize-nongenic-genomecov-out,
-        # igvtools-out
+        index-dedup-out,
+        insert-metrics-output,
+        insert-metrics-histogram,
+        intersect-genic-out,
+        intersect-nongenic-out,
+        summarize-genomecov-out,
+        summarize-genic-genomecov-out,
+        summarize-nongenic-genomecov-out,
+        igvtools-out
       ]
 
   all-parents:
@@ -282,6 +289,7 @@ steps:
       read2: parent-reads2
       alignment: alignment
       reference: reference
+      gff: gff
 
     out: [
         fastqc-zips,
@@ -292,15 +300,15 @@ steps:
         indexed,
         deduped-output,
         deduped-metrics,
-        index-dedup-out
-        # insert-metrics-output,
-        # insert-metrics-histogram,
-        # intersect-genic-out,
-        # intersect-nongenic-out,
-        # summarize-genomecov-out,
-        # summarize-genic-genomecov-out,
-        # summarize-nongenic-genomecov-out,
-        # igvtools-out
+        index-dedup-out,
+        insert-metrics-output,
+        insert-metrics-histogram,
+        intersect-genic-out,
+        intersect-nongenic-out,
+        summarize-genomecov-out,
+        summarize-genic-genomecov-out,
+        summarize-nongenic-genomecov-out,
+        igvtools-out
       ]
 
   merge-parents:
@@ -317,62 +325,15 @@ steps:
   # GRIDSS
   #
   gridss:
-    run: ../tools/src/tools/gridss-callvariants.cwl
+    run: rf-gridss.cwl
 
-    scatter: [INPUT]
+    scatter: [main-input]
 
     in:
-      INPUT:
-        source: all-children/deduped-output
-        valueFrom: >
-          ${
-              if ( self == null ) {
-                return null;
-              } else {
-                return [self];
-              }
-          }
-      INPUT2:
-        source: merge-parents/merge
-        valueFrom: >
-          ${
-              if ( self == null ) {
-                return null;
-              } else {
-                return [self];
-              }
-          }
-
-      INPUT_LABEL:
-        source: all-children/deduped-output
-        valueFrom: >
-          ${
-              return self.nameroot;
-          }
-      INPUT_LABEL2:
-        source: merge-parents/merge
-        valueFrom: >
-          ${
-              return self.nameroot;
-          }
-
-      REFERENCE_SEQUENCE: reference
-
-      BLACKLIST: blacklist
-
-      OUTPUT:
-        source: all-children/deduped-output
-        valueFrom: >
-          ${
-              return self.nameroot + '.gridss.assembly.vcf'
-          }
-
-      ASSEMBLY:
-        source: all-children/deduped-output
-        valueFrom: >
-          ${
-              return self.nameroot + '.gridss.assembly.bam'
-          }
+      main-input: all-children/deduped-output
+      parent-merge: merge-parents/merge
+      reference: reference
+      blacklist: blacklist
 
     out: [vcf, bam, vcf_working, bam_working]
 
