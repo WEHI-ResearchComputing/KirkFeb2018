@@ -77,10 +77,6 @@ outputs:
         type: array
         items: File
     outputSource: all-parents/fastqc-reports
-  # alignment
-  parent-align-sam:
-    type: File[]
-    outputSource: all-parents/align-sam
   # convert
   parent-sorted:
     type: File[]
@@ -120,12 +116,6 @@ outputs:
     type: File[]
     outputSource: all-parents/insert-metrics-histogram
   # Coverage files
-  parent-intersect-genic-out:
-    type: File[]
-    outputSource: all-parents/intersect-genic-out
-  parent-intersect-nongenic-out:
-    type: File[]
-    outputSource: all-parents/intersect-nongenic-out
   parent-summarize-genomecov-out:
     type: File[]
     outputSource: all-parents/summarize-genomecov-out
@@ -158,10 +148,6 @@ outputs:
         type: array
         items: File
     outputSource: all-children/fastqc-reports
-  # alignment
-  child-align-sam:
-    type: File[]
-    outputSource: all-children/align-sam
   # convert
   child-sorted:
     type: File[]
@@ -201,12 +187,6 @@ outputs:
     type: File[]
     outputSource: all-children/insert-metrics-histogram
   # Coverage files
-  child-intersect-genic-out:
-    type: File[]
-    outputSource: all-children/intersect-genic-out
-  child-intersect-nongenic-out:
-    type: File[]
-    outputSource: all-children/intersect-nongenic-out
   child-summarize-genomecov-out:
     type: File[]
     outputSource: all-children/summarize-genomecov-out
@@ -228,6 +208,14 @@ outputs:
     type: File
     outputSource: merge-parents/merge
 
+  parent-merge-igvtools:
+    type: File
+    outputSource: merge-parents-igvtools/output
+
+  parent-merge-index:
+    type: File
+    outputSource: merge-parent-index/index
+
     # gridss
   gridss-bam:
     type: File[]
@@ -235,9 +223,6 @@ outputs:
   gridss-vcf:
     type: File[]
     outputSource: gridss/vcf
-  gridss-vcf-dir:
-    type: Directory[]
-    outputSource: gridss/vcf_working
   gridss-bam-dir:
     type: Directory[]
     outputSource: gridss/bam_working
@@ -322,6 +307,38 @@ steps:
     out: [merge]
 
   #
+  # index bam
+  #
+  merge-parent-index:
+    run: ../tools/src/tools/samtools-index.cwl
+
+    in:
+      input:
+        source: merge-parents/merge
+
+    out: [index]
+
+  #
+  # Looking at bams in IGV is memory-hungry, and could be replaced by using tdf-format
+  # coverage files. 3D7-merge-B3_S1-C5_S2.bam done at command line.
+  # Default window size is 25bp
+  #
+  merge-parents-igvtools:
+    run: ../tools/src/tools/igvtools-count.cwl
+
+    in:
+      inputFile: merge-parents/merge
+
+      outputFileName:
+        source: parent-reads1
+        valueFrom: $('3D7-merge-B2_S1-F4_S4.tdf')
+
+      genome:
+        source: reference
+
+    out: [output]
+
+  #
   # GRIDSS
   #
   gridss:
@@ -335,6 +352,6 @@ steps:
       reference: reference
       blacklist: blacklist
 
-    out: [vcf, bam, vcf_working, bam_working]
+    out: [vcf, bam, bam_working]
 
 

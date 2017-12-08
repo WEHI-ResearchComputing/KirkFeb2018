@@ -50,7 +50,7 @@ print('parent-reads1:')
 for f in forward_parent_reads:
     printFile(f)
 print('parent-reads2:')
-for f in backward_child_reads:
+for f in backward_parent_reads:
     printFile(f)
 
 print('')

@@ -122,6 +122,9 @@ steps:
       threads:
         valueFrom: $( num_threads() )
 
+      maxins:
+        valueFrom: $( 1000 )
+
       one: read1
 
       two: read2
