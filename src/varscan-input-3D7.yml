@@ -1,0 +1,56 @@
+sorted-bam:
+  - class: File
+    location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/0A_S1.sorted.bam"
+    secondaryFiles:
+    - class: File
+      location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/0A_S1.sorted.bam.bai"
+  - class: File
+    location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/719F_S2.sorted.bam"
+    secondaryFiles:
+    - class: File
+      location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/719F_S2.sorted.bam.bai"
+  - class: File
+    location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/HLR15_S7.sorted.bam"
+    secondaryFiles:
+    - class: File
+      location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/HLR15_S7.sorted.bam.bai"
+  - class: File
+    location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/HLR4_S3.sorted.bam"
+    secondaryFiles:
+    - class: File
+      location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/HLR4_S3.sorted.bam.bai"
+  - class: File
+    location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/PAR_S4.sorted.bam"
+    secondaryFiles:
+    - class: File
+      location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/PAR_S4.sorted.bam.bai"
+  - class: File
+    location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/SPIR_S5.sorted.bam"
+    secondaryFiles:
+    - class: File
+      location: "/stornext/Bioinf/data/bioinf-data/Papenfuss_lab/projects/malaria/cowman_lab/drug_resistance/KirkFeb2018/results/3D7/SPIR_S5.sorted.bam.bai"
+
+reference:
+  class: File
+  path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+  location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+  secondaryFiles:
+    - class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
+    - class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
+    - class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
+    - class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
+    - class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
+    - class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
+
