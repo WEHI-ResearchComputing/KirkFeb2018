@@ -34,6 +34,10 @@ steps:
 
   gridss:
     run: ../tools/src/tools/gridss-callvariants.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 16
+        ramMin: 64000
 
     in:
       INPUT:
@@ -73,6 +77,9 @@ steps:
       REFERENCE_SEQUENCE: reference
 
       BLACKLIST: blacklist
+
+      WORKER_THREADS:
+        valueFrom: $( 16 )
 
       OUTPUT:
         source: main-input

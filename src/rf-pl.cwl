@@ -6,7 +6,6 @@ cwlVersion: v1.0
 requirements:
 - class: InlineJavascriptRequirement
   expressionLib:
-  - var num_threads = function() { return 8; };
   - var tool_location = function() { return "tools/src/tools/"; };
 - class: ScatterFeatureRequirement
 - class: StepInputExpressionRequirement
@@ -16,9 +15,72 @@ requirements:
 inputs:
   read1: File
   read2: File
-  alignment: File
-  reference: File
-  gff: File
+
+  reference:
+    type: File
+    default:
+      class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta
+      secondaryFiles:
+      secondaryFiles:
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.fai
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.fai
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.amb
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.amb
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.ann
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.ann
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.bwt
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.bwt
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.pac
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.pac
+        - class: File
+          path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.sa
+          location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.fasta.sa
+  gff:
+    type: File
+    default:
+      class: File
+      path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.38.gff3
+      location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/plasmodium_falciparum_dd2/Plasmodium_falciparum_dd2.ASM14979v1.38.gff3
+
+  # reference:
+  #   type: File
+  #   default:
+  #     class: File
+  #     path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+  #     location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta
+  #     secondaryFiles:
+  #       - class: File
+  #         path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
+  #         location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.amb
+  #       - class: File
+  #         path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
+  #         location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.ann
+  #       - class: File
+  #         path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
+  #         location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.bwt
+  #       - class: File
+  #         path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
+  #         location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.fai
+  #       - class: File
+  #         path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
+  #         location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.pac
+  #       - class: File
+  #         path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
+  #         location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7_Genome.fasta.sa
+
+  # gff:
+  #   type: File
+  #   default:
+  #     class: File
+  #     path: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
+  #     location: /wehisan/bioinf/bioinf-data/Papenfuss_lab/projects/reference_genomes/plasmodium/PlasmoDB-29_Pfalciparum3D7/PlasmoDB-29_Pfalciparum3D7.gff
 
 outputs:
   # fastqc output
@@ -32,6 +94,9 @@ outputs:
   align-sam:
     type: File
     outputSource: align/aligned-file
+  align-stats:
+    type: File
+    outputSource: align/stats
   # convert
   sorted:
     type: File
@@ -108,7 +173,10 @@ steps:
   #
   align:
     run: ../tools/src/tools/bowtie2.cwl
-
+    requirements:
+      ResourceRequirement:
+        coresMin: 8
+        ramMin: 16000
     in:
       samout:
         source: read1
@@ -120,7 +188,7 @@ steps:
           }
 
       threads:
-        valueFrom: $( num_threads() )
+        valueFrom: $( 8 )
 
       maxins:
         valueFrom: $( 1000 )
@@ -133,6 +201,7 @@ steps:
         source: reference
         valueFrom: >
           ${
+              // convert file://path/whatever/basename.fastq to /path/whatever/basename
               var fn = self.path;
               return fn.substring(7, fn.length-6);
           }
@@ -158,7 +227,14 @@ steps:
               return fn;
           }
 
-    out: [aligned-file]
+      stats_filename:
+        source: read1
+        valueFrom: >
+          ${
+            return self.nameroot + '.stats';
+          }
+
+    out: [aligned-file, stats]
 
 
   #
@@ -166,6 +242,10 @@ steps:
   #
   convert:
     run: ../tools/src/tools/samtools-view.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 8
+        ramMin: 32000
 
     in:
       input:
@@ -179,7 +259,7 @@ steps:
               return fn + '.bam'
           }
       threads:
-        valueFrom: ${ return num_threads(); }
+        valueFrom: $( 8 )
 
     out: [output]
 
@@ -188,6 +268,10 @@ steps:
   #
   sort:
     run: ../tools/src/tools/samtools-sort.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 8
+        ramMin: 32000
 
     in:
       input:
@@ -201,7 +285,7 @@ steps:
               return fn + '.sorted.bam'
           }
       threads:
-        valueFrom: ${ return num_threads(); }
+        valueFrom: $( 8 )
 
     out: [sorted]
 
@@ -210,6 +294,10 @@ steps:
   #
   index:
     run: ../tools/src/tools/samtools-index.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 8
+        ramMin: 32000
 
     in:
       input:
@@ -222,6 +310,10 @@ steps:
 #
   dedup:
     run: ../tools/src/tools/picard-MarkDuplicates.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 32000
 
     in:
       inputFileName_markDups: sort/sorted
@@ -254,6 +346,10 @@ steps:
   #
   index-dedup:
     run: ../tools/src/tools/samtools-index.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 32000
 
     in:
       input:
@@ -267,6 +363,10 @@ steps:
 #
   insert-metrics:
     run: ../tools/src/tools/picard-CollectInsertSizeMetrics.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 32000
 
     in:
       INPUT: dedup/markDups_output
@@ -300,6 +400,10 @@ steps:
   #
   coverage:
     run: ../tools/src/tools/bedtools-genomecov.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 128000
 
     in:
       input:
@@ -332,6 +436,10 @@ steps:
   #
   summarize-genomecov:
     run: ../tools/src/tools/awk.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 8000
 
     in:
       infile: coverage/genomecoverage
@@ -356,6 +464,10 @@ steps:
 #
   intersect-genic:
     run: ../tools/src/tools/bedtools-intersect.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 128000
 
     in:
       inputA:
@@ -389,6 +501,10 @@ steps:
 #
   intersect-nongenic:
     run: ../tools/src/tools/bedtools-intersect.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 128000
 
     in:
       inputA:
@@ -421,6 +537,10 @@ steps:
   #
   coverage-genic:
     run: ../tools/src/tools/bedtools-genomecov.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 128000
 
     in:
       input:
@@ -453,13 +573,20 @@ steps:
   #
   summarize-genic-genomecov:
     run: ../tools/src/tools/awk.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 8000
 
     in:
       infile: coverage-genic/genomecoverage
 
       program:
         valueFrom: >
-          $( '{total += $3; count +=1}; END {print "total of all reads at genic bases", total, ", mean cov is", total / 13979861}' )
+          ${
+            var TOTGENELENGTH = '13979861';
+            return '{total += $3; count +=1}; END {print "total of all reads at genic bases", total, ", mean cov is", total /' + TOTGENELENGTH + '}' ;
+          }
 
       outputFileName:
         source: read1
@@ -478,6 +605,10 @@ steps:
   #
   coverage-nongenic:
     run: ../tools/src/tools/bedtools-genomecov.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 128000
 
     in:
       input:
@@ -510,6 +641,10 @@ steps:
   #
   summarize-nongenic-genomecov:
     run: ../tools/src/tools/awk.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 8000
 
     in:
       infile: coverage-nongenic/genomecoverage
@@ -531,11 +666,15 @@ steps:
 
   #
   # Looking at bams in IGV is memory-hungry, and could be replaced by using tdf-format
-  # coverage files. 3D7-merge-B3_S1-C5_S2.bam done at command line.
+  # coverage files. 3D7-merge-B3_S1-C5_s3.bam done at command line.
   # Default window size is 25bp
   #
   igvtools:
     run: ../tools/src/tools/igvtools-count.cwl
+    requirements:
+      ResourceRequirement:
+        coresMin: 2
+        ramMin: 32000
 
     in:
       inputFile: dedup/markDups_output
